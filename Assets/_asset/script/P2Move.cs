@@ -55,10 +55,6 @@ public class P2Move : MonoBehaviour
             {
                 rb.velocity = new Vector2(rb.velocity.x, jump);
                 chamDat = false;
-                if (Input.GetKey(KeyCode.J))
-                {
-                    anim.SetTrigger("flykick");
-                }
             }
             anim.SetBool("jump", !chamDat);
         }

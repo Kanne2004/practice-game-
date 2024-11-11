@@ -26,7 +26,7 @@ public class P1Move : MonoBehaviour
         Crouch();
         Win();
         Die();
-
+        Dizzy();
     }
 
     private void DiChuyen()
@@ -49,14 +49,10 @@ public class P1Move : MonoBehaviour
     {
         if (chamDat == true)
         {
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.W) && chamDat)
             {
                 rb.velocity = new Vector2(rb.velocity.x, jump);
                 chamDat = false;
-                if (Input.GetKey(KeyCode.J))
-                {
-                    anim.SetTrigger("flykick");
-                }
             }
             anim.SetBool("jump", !chamDat);
         }
@@ -96,6 +92,14 @@ public class P1Move : MonoBehaviour
             anim.SetBool("win", true);
         }
         else anim.SetBool("win", false);
+    }
+    private void Dizzy()
+    {
+        if (Input.GetKey(KeyCode.Alpha9))
+        {
+            anim.SetBool("dizzy", true);
+        }
+        else anim.SetBool("dizzy", false);
     }
 }
 

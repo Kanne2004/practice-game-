@@ -2,8 +2,7 @@ using UnityEngine;
 using UnityEngine.UIElements.Experimental;
 
 public class P2Dash : MonoBehaviour
-{
-    public KeyCode dashKey;
+{ 
     public float DashDistance = 4f; // khoang cach luot
     public float DashSpeed = 5f; // toc do luot
     public float DashDelay = 1f;
@@ -28,7 +27,7 @@ public class P2Dash : MonoBehaviour
 
     void check()
     {
-        if (Input.GetKeyDown(dashKey) && ReadyToDash)
+        if (Input.GetKey(KeyCode.Keypad0) && ReadyToDash)
         {
 
             isDashing = true;
@@ -37,7 +36,7 @@ public class P2Dash : MonoBehaviour
     }
     void checkStrike()
     {
-        if (Input.GetMouseButton(1) && ReadyToDash)
+        if (Input.GetKey(KeyCode.Keypad5) && ReadyToDash)
         {
 
             isDashing = true;
@@ -59,7 +58,7 @@ public class P2Dash : MonoBehaviour
             else
                 transform.position += new Vector3(DashStep, 0, 0);
             DashDistance -= Mathf.Abs(DashStep);
-            if (DashDistance < 0)
+            if (DashDistance < 1)
             {
                 isDashing = false;
                 anim.SetBool("dash", false);
