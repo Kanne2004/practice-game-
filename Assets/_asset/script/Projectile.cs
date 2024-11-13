@@ -1,50 +1,54 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
-    [SerializeField] private float speed;
-    private float direction;
-    private bool hit;
-    private float lifetime;
-
-    private Animator anim;
-    private BoxCollider2D boxCollider;
+    public float Now;
+    public float Cooldown = 0.7f;
+    private bool hit = false;
+    public float speed = 5f;
+    public BoxCollider2D boxCollider2D;
+    public Animator MyAnimator;
 
     private void Awake()
     {
-        anim = GetComponent<Animator>();
-        boxCollider = GetComponent<BoxCollider2D>();
+        MyAnimator = GetComponent<Animator>();
+        boxCollider2D = GetComponent<BoxCollider2D>();
     }
+
+    private void Start()
+    {
+        Now = Time.time;
+    }
+
     private void Update()
     {
         if (hit) return;
-        float movementSpeed = speed * Time.deltaTime * direction;
-        transform.Translate(movementSpeed, 0, 0);
-
-        lifetime += Time.deltaTime;
-        if (lifetime > 5) gameObject.SetActive(false);
+        Movement();
     }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         hit = true;
-        boxCollider.enabled = false;
-        anim.SetTrigger("explode");    }
-    public void SetDirection(float _direction)
-    {
-        lifetime = 0;
-        direction = _direction;
-        gameObject.SetActive(true);
-        hit = false;
-        boxCollider.enabled = true;
-
-        float localScaleX = transform.localScale.x;
-        if (Mathf.Sign(localScaleX) != _direction)
-            localScaleX = -localScaleX;
-
-        transform.localScale = new Vector3(localScaleX, transform.localScale.y, transform.localScale.z);
+        boxCollider2D.enabled = false;
+        MyAnimator.SetTrigger("Explosion");
+        Destroy(gameObject, Cooldown);
     }
-    private void Deactivate()
+
+    private void Movement()
     {
-        gameObject.SetActive(false);
+        float movement = Time.deltaTime * speed;
+        if (transform.localScale.x < 0)
+        {
+            transform.Translate(-movement, 0, 0);
+        }
+        else
+            transform.Translate(movement, 0, 0);
+        if (Time.time > Now + 2)
+        {
+            Destroy(gameObject);
+        }
+
     }
 }
