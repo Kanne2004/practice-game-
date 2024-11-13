@@ -31,6 +31,7 @@ public class P1Dash : MonoBehaviour
 
             isDashing = true;
             anim.SetBool("dash", true);
+            anim.SetBool("strike", true);
         }
     }
 
@@ -52,6 +53,7 @@ public class P1Dash : MonoBehaviour
             {
                 isDashing = false;
                 anim.SetBool("dash", false);
+                anim.SetBool("strike", false);
                 DashDistance = 4f;
             }
             DashTime = Time.time;
