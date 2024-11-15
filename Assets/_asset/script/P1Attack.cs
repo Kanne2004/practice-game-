@@ -1,41 +1,56 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class P1Attack : MonoBehaviour
 {
-    [SerializeField] private float attackCooldown;
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private GameObject[] fireballs;
-
-    private Animator anim;
-    private P1Move p1Move;
-    private float cooldownTimer = Mathf.Infinity;
+    public Transform gunTip;
+    public GameObject bullet;
+    public bool AniAttack = false;
+    public float TimeDelay = 1f;
+    public float lastTime;
+    public bool IsAttack = true;
+    public Animator Animator;
 
     private void Awake()
     {
-        anim = GetComponent<Animator>();
-        p1Move = GetComponent<P1Move>();
+        Animator = GetComponent<Animator>();
     }
 
-    private void Update()
+    void Update()
     {
-        if (Input.GetMouseButton(0) && cooldownTimer > attackCooldown && p1Move.canAttack())
-            Attack();
 
-        cooldownTimer += Time.deltaTime;
+        Attacking();
     }
 
-    private void Attack()
+    public void Attacking()
     {
-        anim.SetTrigger("attack");
-        cooldownTimer = 0;
-    }
-    private int FindFireball()
-    {
-        for (int i = 0; i < fireballs.Length; i++)
+        if (Input.GetKeyDown(KeyCode.Space) && IsAttack)
         {
-            if (!fireballs[i].activeInHierarchy)
-                return i;
+            AniAttack = true;
+            GameObject gameObject = Instantiate(bullet, gunTip.position, Quaternion.Euler(new Vector3(0, 0, 0)));
+            if (transform.localScale == new Vector3(-1, 1, 1))
+            {
+                gameObject.transform.localScale = new Vector3(-1, 1, 1);
+            }
+            IsAttack = false;
+            lastTime = Time.time;
         }
-        return 0;
+
+        if (Time.time > lastTime + 0.4f)
+        {
+            AniAttack = false;
+
+        }
+        Animator.SetBool("attack", AniAttack);
+        //Animator.SetBool("CrouchAttack", AniAttack);
+        //Animator.SetBool("JumpAttack", AniAttack);
+
+        // tranh spam 
+        if (Time.time > lastTime + TimeDelay)
+        {
+            IsAttack = true;
+
+        }
     }
 }

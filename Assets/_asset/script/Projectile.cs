@@ -32,7 +32,7 @@ public class Projectile : MonoBehaviour
     {
         hit = true;
         boxCollider2D.enabled = false;
-        MyAnimator.SetTrigger("Explosion");
+        MyAnimator.SetTrigger("explode");
         Destroy(gameObject, Cooldown);
     }
 
